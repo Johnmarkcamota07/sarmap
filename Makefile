@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Iinclude
+CFLAGS = -Wall -Wextra -Iinclude -g
 SRC = src/sarmap.c
 OBJ = $(SRC:.c=.o)
 
@@ -7,15 +7,9 @@ OBJ = $(SRC:.c=.o)
 LIBDIR = lib
 BINDIR = bin
 
-# Define Static Library
+# Create static library name
 STATIC_LIB = $(LIBDIR)/libsarmap.a
 TEST_PROGRAM = $(BINDIR)/main
-
-# Windows (MinGW) Support
-ifeq ($(OS), Windows_NT)
-    STATIC_LIB = $(LIBDIR)/sarmap.lib
-    CFLAGS += -D BUILD_SARMAP
-endif
 
 all: folders $(STATIC_LIB) $(TEST_PROGRAM)
 
