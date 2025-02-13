@@ -18,7 +18,6 @@ int main() {
     }
 
     free(userInput);
-    freeArraySTR(words);
 
     return 0;
 }
