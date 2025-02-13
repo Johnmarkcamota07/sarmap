@@ -17,4 +17,7 @@ jobs:
         run: make
 
       - name: Run Tests
-        run: ./bin/main || echo "Tests failed"
+        run: ./bin/main || { echo "Tests failed"; exit 1; }
+
+      - name: Log Test Output
+        run: cat ./bin/main.log || echo "Log file not found"
