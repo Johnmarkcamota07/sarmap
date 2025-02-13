@@ -1,4 +1,4 @@
-#include "include/sarmap.h"
+#include "sarmap.h"
 
 int main() {
     printf("Enter a string: ");
