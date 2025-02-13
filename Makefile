@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Iinclude -fPIC
-SRC = src/mylib.c
+SRC = src/sarmap.c
 OBJ = $(SRC:.c=.o)
 
 # Define output directories
@@ -37,7 +37,7 @@ $(SHARED_LIB): $(OBJ)
 
 # Compile Test Program
 $(TEST_PROGRAM): main.c $(STATIC_LIB)
-	$(CC) -Iinclude main.c -L$(LIBDIR) -lmylib -o $@
+	$(CC) -Iinclude main.c -L$(LIBDIR) -lsarmap -o $@
 
 clean:
 	rm -f $(OBJ) $(STATIC_LIB) $(SHARED_LIB) $(TEST_PROGRAM)
