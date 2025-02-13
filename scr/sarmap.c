@@ -3,6 +3,7 @@ CREATOR: JOHN MARK M. CAMOTA
 MONTH AND YEAR: FEBUARY 2025 (START)
 FINISH??
 */
+#define BUILD_SARMAP 
 
 #include <stdio.h>
 #include <stdlib.h>
