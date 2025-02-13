@@ -19,6 +19,4 @@
 SARMAP_EXPORT char *inputSTR();
 SARMAP_EXPORT char **arraySTR(char *string, char **array);
 SARMAP_EXPORT void clearBuffer();
-SARMAP_EXPORT void freeArraySTR(char **array);
-
 #endif // SARMAP_H
