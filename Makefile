@@ -8,14 +8,14 @@ LIBDIR = lib
 BINDIR = bin
 
 # Create static and shared library names
-STATIC_LIB = $(LIBDIR)/libmylib.a
-SHARED_LIB = $(LIBDIR)/libmylib.so
+STATIC_LIB = $(LIBDIR)/libsarmap.a
+SHARED_LIB = $(LIBDIR)/libsarmap.so
 TEST_PROGRAM = $(BINDIR)/main
 
 # Windows (MinGW) Support
 ifeq ($(OS), Windows_NT)
-    SHARED_LIB = $(LIBDIR)/mylib.dll
-    CFLAGS += -D BUILD_MYLIB
+    SHARED_LIB = $(LIBDIR)/sarmap.dll
+    CFLAGS += -D BUILD_SARMAP
 endif
 
 all: folders $(STATIC_LIB) $(SHARED_LIB) $(TEST_PROGRAM)
@@ -41,4 +41,3 @@ $(TEST_PROGRAM): main.c $(STATIC_LIB)
 
 clean:
 	rm -f $(OBJ) $(STATIC_LIB) $(SHARED_LIB) $(TEST_PROGRAM)
-
