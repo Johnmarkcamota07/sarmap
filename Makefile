@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Iinclude -fPIC
+CFLAGS = -Wall -Wextra -Iinclude
 SRC = src/sarmap.c
 OBJ = $(SRC:.c=.o)
 
@@ -7,18 +7,17 @@ OBJ = $(SRC:.c=.o)
 LIBDIR = lib
 BINDIR = bin
 
-# Create static and shared library names
+# Define Static Library
 STATIC_LIB = $(LIBDIR)/libsarmap.a
-SHARED_LIB = $(LIBDIR)/libsarmap.so
 TEST_PROGRAM = $(BINDIR)/main
 
 # Windows (MinGW) Support
 ifeq ($(OS), Windows_NT)
-    SHARED_LIB = $(LIBDIR)/sarmap.dll
+    STATIC_LIB = $(LIBDIR)/sarmap.lib
     CFLAGS += -D BUILD_SARMAP
 endif
 
-all: folders $(STATIC_LIB) $(SHARED_LIB) $(TEST_PROGRAM)
+all: folders $(STATIC_LIB) $(TEST_PROGRAM)
 
 folders:
 	mkdir -p $(LIBDIR) $(BINDIR)
@@ -31,13 +30,9 @@ $(OBJ): $(SRC)
 $(STATIC_LIB): $(OBJ)
 	ar rcs $@ $^
 
-# Create Shared Library (Linux/macOS: .so, Windows: .dll)
-$(SHARED_LIB): $(OBJ)
-	$(CC) -shared -o $@ $^
-
 # Compile Test Program
 $(TEST_PROGRAM): main.c $(STATIC_LIB)
 	$(CC) -Iinclude main.c -L$(LIBDIR) -lsarmap -o $@
 
 clean:
-	rm -f $(OBJ) $(STATIC_LIB) $(SHARED_LIB) $(TEST_PROGRAM)
+	rm -f $(OBJ) $(STATIC_LIB) $(TEST_PROGRAM)
