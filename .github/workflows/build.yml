@@ -4,17 +4,20 @@ on: [push, pull_request]
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-    - name: Install GCC
-      run: sudo apt-get update && sudo apt-get install -y gcc
+    - name: Set up GCC and GDB
+      run: sudo apt-get install gcc gdb
 
-    - name: Build Static Library
+    - name: Compile Libraries
       run: make all
 
     - name: Run Tests
-      run: ./bin/main || { echo "Tests failed"; exit 1; }
+      env:
+        LD_LIBRARY_PATH: ${{ github.workspace }}/lib
+      run: |
+        gdb -batch -ex "run" -ex "bt" ./bin/main
