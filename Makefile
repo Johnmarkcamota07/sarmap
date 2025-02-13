@@ -1,13 +1,44 @@
 CC = gcc
-CFLAGS = -Iinclude -Wall -Wextra -Werror
-SRC = src/sarmap.c main.c
+CFLAGS = -Wall -Wextra -Iinclude -fPIC
+SRC = src/mylib.c
 OBJ = $(SRC:.c=.o)
-TARGET = main
 
-all: $(TARGET)
+# Define output directories
+LIBDIR = lib
+BINDIR = bin
 
-$(TARGET): $(OBJ)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ)
+# Create static and shared library names
+STATIC_LIB = $(LIBDIR)/libmylib.a
+SHARED_LIB = $(LIBDIR)/libmylib.so
+TEST_PROGRAM = $(BINDIR)/main
+
+# Windows (MinGW) Support
+ifeq ($(OS), Windows_NT)
+    SHARED_LIB = $(LIBDIR)/mylib.dll
+    CFLAGS += -D BUILD_MYLIB
+endif
+
+all: folders $(STATIC_LIB) $(SHARED_LIB) $(TEST_PROGRAM)
+
+folders:
+	mkdir -p $(LIBDIR) $(BINDIR)
+
+# Compile object file
+$(OBJ): $(SRC)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Create Static Library
+$(STATIC_LIB): $(OBJ)
+	ar rcs $@ $^
+
+# Create Shared Library (Linux/macOS: .so, Windows: .dll)
+$(SHARED_LIB): $(OBJ)
+	$(CC) -shared -o $@ $^
+
+# Compile Test Program
+$(TEST_PROGRAM): main.c $(STATIC_LIB)
+	$(CC) -Iinclude main.c -L$(LIBDIR) -lmylib -o $@
 
 clean:
-	rm -f $(OBJ) $(TARGET)
+	rm -f $(OBJ) $(STATIC_LIB) $(SHARED_LIB) $(TEST_PROGRAM)
+
